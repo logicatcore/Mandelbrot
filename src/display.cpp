@@ -27,11 +27,13 @@ void Display::Run(Renderer &renderer){
 	int sub_domain_x, sub_domain_y;
 
   while (!quit){
+		// loop exit
 		SDL_PollEvent(&e);
 		if (e.type == SDL_QUIT) {
       quit = true;
 			continue;
     }
+		// handle zoom
 		SDL_PumpEvents();
 		if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT)) {
 			if (!event){
@@ -39,9 +41,11 @@ void Display::Run(Renderer &renderer){
 				event = true;
 			}
 			else{
+				// update until event ends
 				SDL_GetMouseState(&end.x, &end.y);
 			}
 		}
+		// after an event or upon first run
 		if (event & (!(SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT))) | first_run ) {
 			int width = end.x - start.x;
 			int height = end.y - start.y;
@@ -49,11 +53,11 @@ void Display::Run(Renderer &renderer){
 			
 			if (!first_run) {
 				tmp1 = fullDomainScale(std::complex<double>(start.x, start.y));
+				tmp2 = fullDomainScale(std::complex<double>(start.x + square_side, start.y + square_side));
 				
 				fract.x_min = tmp1.real();
 				fract.y_min = tmp1.imag();
 
-				tmp2 = fullDomainScale(std::complex<double>(start.x + square_side, start.y + square_side));
 				
 				fract.x_max = tmp2.real();
 				fract.y_max = tmp2.imag();
@@ -63,25 +67,22 @@ void Display::Run(Renderer &renderer){
 			double fract_domain_width = (fract.x_max - fract.x_min) / (n_cores / 2);
 			double fract_domain_height = (fract.y_max - fract.y_min) / 2;
 
-			// std::vector<std::tuple<double, double>> fract_pts;
 			if (first_run) {
 				// unit is pixels
 				sub_domain_x = std::round(square_side / (n_cores / 2)); // appropriate number of columns
 				sub_domain_y = std::round(square_side / 2); // 2 rows
-				// int sub_domain_pixel_count = (scr.x_max * scr.y_max) / n_cores;
-
+        // create subdomain x and y coordinates
 				for (int j = 0; j <= (n_cores / 2); j++){ // along x
 					for (int i = 0; i <= 2; i++){ // along y
 						grid_pts.emplace_back(std::tuple<int, int>(start.x + j * sub_domain_x, start.y + i * sub_domain_y));
-						// fract_pts.emplace_back(std::tuple<double, double>(fract.x_min + j * fract_domain_width, fract.y_min + i * fract_domain_height));
 					}
 				}
 			}
 
-			// colors.clear();
 			threads.erase(threads.begin(), threads.end());
 			for (int i = 0; i< n_cores; i++){
-				int tmp_idx = (i%2) + std::round(i/2)*3;
+				// enables utilisation of pattern to pair diagonal coordinate pairs, top left to bottom right
+				int tmp_idx = (i%2) + std::round(i/2)*3; 
 				threads.emplace_back(std::thread(&Display::Mandelbrot, this,
 				std::get<0>(grid_pts[tmp_idx]),
 				std::get<1>(grid_pts[tmp_idx]),
@@ -114,6 +115,11 @@ void Display::Mandelbrot(int xMin, int yMin, int xMax, int yMax,
 		for(int j = yMin; j < yMax; ++j) {
 			std::complex<double> c((double)i, (double)j);
 			c = scale(c, sub_domain_width, sub_domain_height, cores);
+			/* sub-domain numbering, column first
+			 * 0 2 4  
+			 * 
+			 * 1 3 5
+			*/
 			if (domain_no < 2) {
 				map_color(c, j + column * 2 * sub_domain_height, clrs);
 			}
@@ -132,7 +138,7 @@ std::complex<double> Display::fullDomainScale(std::complex<double> c) {
 	return aux;
 }
 
-// Convert a pixel coordinate to the complex domain
+// Convert a pixel coordinate to the complex domain, subdomain level
 std::complex<double> Display::scale(std::complex<double> c, int &scr_x_max, int &scr_y_max, int n_cores) {
 	std::complex<double> aux(c.real() / (double)scr_x_max * (fract.getWidth() / (n_cores / 2)) + fract.x_min,
 		c.imag() / (double)scr_y_max * (fract.getHeight() / 2) + fract.y_min);

@@ -48,7 +48,6 @@ void Renderer::Render(std::vector<std::tuple<int, int, int>> &clrs) {
       k++;
     }
   }
-  
   // Update Screen
   SDL_RenderPresent(sdl_renderer);
 }

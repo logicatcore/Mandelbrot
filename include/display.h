@@ -7,6 +7,7 @@
 #include <complex>
 #include <tuple>
 
+// window details in pixel units
 template <typename T>
 struct Scr{
   T x_min, x_max, y_min, y_max;
@@ -18,6 +19,7 @@ struct Scr{
   }
 };
 
+// mapped complex plane bounds
 template <typename T>
 struct Fract{
   T x_min, x_max, y_min, y_max;
@@ -47,6 +49,8 @@ class Display {
       scr.x_max = screen_dim; 
       scr.y_min = 0; 
       scr.y_max = screen_dim; 
+
+      colors = std::vector<std::tuple<int, int, int>>(screen_dim * screen_dim);
     };
   void Run(Renderer &renderer);
   void Mandelbrot(int xMin, int yMin, int xMax, int yMax, 
@@ -61,9 +65,8 @@ class Display {
  private:
   Scr<int> scr;
   Fract<double> fract;
-  std::vector<std::tuple<int, int, int>> colors = std::vector<std::tuple<int, int, int>>(160000);
+  std::vector<std::tuple<int, int, int>> colors;
   const int MAX_ITERS; 
-  void Update();
 };
 
 #endif
