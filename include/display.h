@@ -31,8 +31,7 @@ struct Fract{
 
 class Display {
  public:
-  Display(const std::size_t screen_width,
-          const std::size_t screen_height,
+  Display(const std::size_t screen_dim,
           const double x_low,
           const double x_high,
           const double y_low,
@@ -45,22 +44,24 @@ class Display {
       fract.y_max = y_high;
       
       scr.x_min = 0;
-      scr.x_max = screen_width; 
+      scr.x_max = screen_dim; 
       scr.y_min = 0; 
-      scr.y_max = screen_height; 
+      scr.y_max = screen_dim; 
     };
   void Run(Renderer &renderer);
-  void Mandelbrot(Renderer &renderer);
-  
-  void calculate_number_iterations();
-  std::complex<double> scale(std::complex<double> c);
-  void map_color(std::complex<double> c);
-  void set_color(int iter);
+  void Mandelbrot(int xMin, int yMin, int xMax, int yMax, 
+                  int sub_domain_width, int sub_domain_height, int cores, 
+                  std::vector<std::tuple<int, int, int>> &clrs, int domain_no) ;
 
+  std::complex<double> fullDomainScale(std::complex<double> c);
+  std::complex<double> scale(std::complex<double> c, int &scr_x_max, int &scr_y_max, int n_cores);
+  void map_color(std::complex<double> c, int &&idx, std::vector<std::tuple<int, int, int>> &clr);
+  void set_color(int iter, int idx, std::vector<std::tuple<int, int, int>> &clr);
+ 
  private:
   Scr<int> scr;
   Fract<double> fract;
-  std::vector<std::tuple<int, int, int>> colors;
+  std::vector<std::tuple<int, int, int>> colors = std::vector<std::tuple<int, int, int>>(160000);
   const int MAX_ITERS; 
   void Update();
 };
