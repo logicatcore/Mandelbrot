@@ -51,19 +51,19 @@ class Display {
       scr.y_max = screen_dim; 
     };
   void Run(Renderer &renderer);
-  void Mandelbrot(Renderer &renderer);
-  
-  void calculate_number_iterations();
-  std::complex<double> scale(std::complex<double> c);
-  void map_color(std::complex<double> c);
-  void set_color(int iter);
+
 
  private:
   Scr<int> scr;
   Fract<double> fract;
   std::vector<std::tuple<int, int, int>> colors;
   const int MAX_ITERS, SET_ORDER; 
-  void Update();
+
+  void Mandelbrot(Renderer &renderer);
+  void calculate_number_iterations();
+  std::complex<double> scale(std::complex<double> c);
+  void map_color(std::complex<double> c);
+  void set_color(int iter);
 };
 
 #endif
