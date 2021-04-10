@@ -55,8 +55,8 @@ void Display::Run(Renderer &renderer){
 			int square_side = std::max(width, height);
 			
 			if (!first_run) {
-				tmp1 = fullDomainScale(std::complex<double>(start.x, start.y));
-				tmp2 = fullDomainScale(std::complex<double>(start.x + square_side, start.y + square_side));
+				tmp1 = Scale(std::complex<double>(start.x, start.y));
+				tmp2 = Scale(std::complex<double>(start.x + square_side, start.y + square_side));
 				
 				fract.x_min = tmp1.real();
 				fract.y_min = tmp1.imag();
@@ -135,7 +135,7 @@ void Display::Mandelbrot(size_t xMin, size_t yMin, size_t xMax, size_t yMax,
 }
 
 // Convert a pixel coordinate to the complex domain
-std::complex<double> Display::fullDomainScale(std::complex<double> c) {
+std::complex<double> Display::Scale(std::complex<double> c) {
 	std::complex<double> aux(c.real() / (double)scr.getWidth() * fract.getWidth() + fract.x_min,
 		c.imag() / (double)scr.getHeight() * fract.getHeight() + fract.y_min);
 	return aux;

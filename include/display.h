@@ -62,7 +62,7 @@ class Display {
                   size_t sub_domain_width, size_t sub_domain_height, size_t cores, 
                   std::shared_ptr<std::vector<std::tuple<size_t, size_t, size_t>>> clrs, size_t domain_no) ;
 
-  std::complex<double> fullDomainScale(std::complex<double> c);
+  std::complex<double> Scale(std::complex<double> c);
   std::complex<double> scale(std::complex<double> c, size_t &scr_x_max, size_t &scr_y_max, size_t n_cores);
   void map_color(std::complex<double> c, size_t &&idx, std::shared_ptr<std::vector<std::tuple<size_t, size_t, size_t>>> &clr);
   void set_color(size_t iter, size_t idx, std::shared_ptr<std::vector<std::tuple<size_t, size_t, size_t>>> &clr);
