@@ -36,13 +36,13 @@ using std::size_t;
 
 class Display {
  public:
-  Display(const size_t screen_dim,
-          const size_t order,
-          const double x_low,
-          const double x_high,
-          const double y_low,
-          const double y_high,
-          const size_t max_iters)
+  Display(size_t screen_dim = 600,
+          size_t order = 2,
+          double x_low = -2.2,
+          double x_high = 1.2,
+          double y_low = -1.7,
+          double y_high = 1.7,
+          size_t max_iters = 100)
     : MAX_ITERS(max_iters),
       SET_ORDER(order) {
       fract.x_min = x_low;
