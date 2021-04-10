@@ -65,19 +65,34 @@ When this happens, remove the `-std=c++17` flag from **CMakeLists.txt** file and
 - [x] The README indicates which project is chosen
 - [x] The README includes information about each rubric point addressed
 - [x] The submission must compile and run
+  * ![](./parallel.png)
 - [x] The project demonstrates an understanding of C++ functions and control structures
+  * Functions, structures, classes are extensively used to organize and group data and actions
 - [x] The project accepts user input and processes the input
+  * @L5:main.cpp command line arguments are optionally used to alter the application execution parameters
 - [x] The project uses Object Oriented Programming techniques
+  * Renderer and Display classes are defined to group the data and the methods that act on them. In addition a renderer object is passed as a parameter to the "Run" function of a display object
 - [x] Classes use appropriate access specifiers for class members
+  * In header files display.h and renderer.h
 - [x] Class constructors utilize member initialization lists
+  * @L6:renderer.cpp and @L46:display.h
 - [x] Classes encapsulate behavior
+  * In header files display.h and renderer.h non-interface functions are made private
 - [x] Overloaded functions allow the same function to operate on different parameters
+  *   `std::complex<double> Scale(std::complex<double> c);` and `std::complex<double> scale(std::complex<double> c, size_t &scr_x_max, size_t &scr_y_max, size_t n_cores);` @L72 and @L73 display.h
 - [x] Templates generalize functions in the project
+  * @L12 and @L24 of display.h
 - [x] The project makes use of references in function declarations
+  * In function protytpes to be seen in files display.h and renderer.h
 - [x] The project uses destructors appropriately
-- [x] The project uses scope / Resource Acquisition Is Initialization (RAII) where appropriate
+  * `Renderer::~Renderer() {
+       SDL_DestroyWindow(sdl_window);
+       SDL_Quit();
+    }` @L33:renderer.cpp
 - [x] The project uses shared pointer for a vector of tuples holding the color of each pixel
+  * `std::shared_ptr<std::vector<std::tuple<int, int, int>>> colors;` @L62:display.h
 - [x] The project uses multiple threading to speed up the computations
+  * `threads.emplace_back(std::thread(&Display::Mandelbrot, this,...` @L89:display.cpp
 
 ## Credits
 
