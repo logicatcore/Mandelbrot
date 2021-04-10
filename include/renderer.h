@@ -11,7 +11,7 @@ class Renderer {
   Renderer(const std::size_t screen_dim);
   ~Renderer();
 
-  void Render(std::shared_ptr<std::vector<std::tuple<int, int, int>>> clrs);
+  void Render(std::shared_ptr<std::vector<std::tuple<std::size_t, std::size_t, std::size_t>>> clrs);
 
  private:
   SDL_Window *sdl_window;

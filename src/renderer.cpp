@@ -35,7 +35,7 @@ Renderer::~Renderer() {
   SDL_Quit();
 }
 
-void Renderer::Render(std::shared_ptr<std::vector<std::tuple<int, int, int>>> clrs) {
+void Renderer::Render(std::shared_ptr<std::vector<std::tuple<std::size_t, std::size_t, std::size_t>>> clrs) {
   // Clear screen
   SDL_SetRenderDrawColor(sdl_renderer, 0x1E, 0x1E, 0x1E, 0xFF);
   SDL_RenderClear(sdl_renderer);

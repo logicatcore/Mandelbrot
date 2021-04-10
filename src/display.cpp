@@ -1,11 +1,14 @@
 #include <thread>
+#include <cmath>
 #include "../include/display.h"
+
+using std::size_t;
 
 void Display::Run(Renderer &renderer){
 	std::complex<double> tmp1, tmp2;
 	std::vector<std::thread> threads;
-	std::vector<std::tuple<int, int>> grid_pts;
-	int n_cores = std::thread::hardware_concurrency();
+	std::vector<std::tuple<size_t, size_t>> grid_pts;
+	size_t n_cores = std::thread::hardware_concurrency();
 
 	// disable out of window mouse activity capture
 	SDL_CaptureMouse(SDL_FALSE);
@@ -24,7 +27,7 @@ void Display::Run(Renderer &renderer){
 	bool quit = false;
 	bool first_run = true;
 
-	int sub_domain_x, sub_domain_y;
+	size_t sub_domain_x, sub_domain_y;
 
   while (!quit){
 		// loop exit
@@ -89,7 +92,7 @@ void Display::Run(Renderer &renderer){
 				std::get<0>(grid_pts[tmp_idx + 4]),
 				std::get<1>(grid_pts[tmp_idx + 4]),
 				sub_domain_x, sub_domain_y, n_cores, 
-				std::ref(colors), i));
+				colors, i));
 			}
 
 			for (std::thread &t: threads){
@@ -104,9 +107,9 @@ void Display::Run(Renderer &renderer){
 	}
 }
 
-void Display::Mandelbrot(int xMin, int yMin, int xMax, int yMax,
-												int sub_domain_width, int sub_domain_height, int cores, 
-												std::shared_ptr<std::vector<std::tuple<int, int, int>>> clrs, int domain_no) 
+void Display::Mandelbrot(size_t xMin, size_t yMin, size_t xMax, size_t yMax,
+												size_t sub_domain_width, size_t sub_domain_height, size_t cores, 
+												std::shared_ptr<std::vector<std::tuple<size_t, size_t, size_t>>> clrs, size_t domain_no) 
 {
 	// Loop over each pixel from our image and check if the point associated with this pixel escapes to infinity
 	int offset = std::round(domain_no / 2) * (2 * sub_domain_height) * sub_domain_width;
@@ -139,26 +142,26 @@ std::complex<double> Display::fullDomainScale(std::complex<double> c) {
 }
 
 // Convert a pixel coordinate to the complex domain, subdomain level
-std::complex<double> Display::scale(std::complex<double> c, int &scr_x_max, int &scr_y_max, int n_cores) {
+std::complex<double> Display::scale(std::complex<double> c, size_t &scr_x_max, size_t &scr_y_max, size_t n_cores) {
 	std::complex<double> aux(c.real() / (double)scr_x_max * (fract.getWidth() / (n_cores / 2)) + fract.x_min,
 		c.imag() / (double)scr_y_max * (fract.getHeight() / 2) + fract.y_min);
 	return aux;
 }
 
 // Check if a point is in the set or escapes to infinity, return the number if iterations
-void Display::map_color(std::complex<double> c, int &&idx, std::shared_ptr<std::vector<std::tuple<int, int, int>>> &clr) 
+void Display::map_color(std::complex<double> c, size_t &&idx, std::shared_ptr<std::vector<std::tuple<size_t, size_t, size_t>>> &clr) 
 {
 	std::complex<double> z(0);
-	int iter = 0;
+	size_t iter = 0;
 
 	while (abs(z) < 2.0 && iter < MAX_ITERS) {
-		z = z * z  + c;
+		z = std::pow(z, SET_ORDER) + c;
 		iter++;
 	}
 	set_color(iter, idx, clr);
 }
 
-void Display::set_color(int iter, int idx, std::shared_ptr<std::vector<std::tuple<int, int, int>>> &clr) {
+void Display::set_color(size_t iter, size_t idx, std::shared_ptr<std::vector<std::tuple<size_t, size_t, size_t>>> &clr) {
 	// map n on the 0..1 interval
 	double t = (double)iter/(double)MAX_ITERS;
 
