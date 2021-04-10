@@ -9,6 +9,10 @@ This application enables investigating the Mandelbrot set flexibily and is capab
 1. The first version maps each pixel to a point on the complex plane sequentially i.e. serial program execution. On branch **serial_computation**.
 2. The second version first divides the entire window into sub windows based on the supported hardware concurrenct and then maps each pixel in each sub window to the complex plane parallely to increase the speed. The increase in speed due to parallel execution is clearly evident during usage. On branch **parallel_computation**.
 
+## Application preview
+
+![](./main.png)
+
 ## Dependencies for Running Locally
 * cmake >= 3.7
   * All OSes: [click here for installation instructions](https://cmake.org/install/)
