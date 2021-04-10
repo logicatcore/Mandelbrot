@@ -28,7 +28,9 @@ This application enables investigating the Mandelbrot set flexibily and is capab
   * Linux: gcc / g++ is installed by default on most Linux distros
   * Mac: same deal as make - [install Xcode command line tools](https://developer.apple.com/xcode/features/)
   * Windows: recommend using [MinGW](http://www.mingw.org/)
-* SDL library
+* SDL2 >= 2.0
+  * All installation instructions can be found [here](https://wiki.libsdl.org/Installation)
+  >Note that for Linux, an `apt` or `apt-get` installation is preferred to building from source.
   * Installation on linux machines `sudo apt-get install libsdl2-dev`
 
 ## Basic Build Instructions
@@ -45,14 +47,6 @@ This application enables investigating the Mandelbrot set flexibily and is capab
 3. The drawn rectangle is turned into a square internally to maintain aspect ratio
 4. Depending on the window size initially set and the max iterations set, the window will be updated in less than a second or in a couple of seconds to show the slected complex plane region of the Mandelbrot set
 
-## Debugging
-
-It is possible that you might run into this error 
-
-`undefined reference to symbol 'pthread_create@@GLIBC_2.2.5'`,
-
-When this happens, remove the `-std=c++17` flag from **CMakeLists.txt** file and run `make` again. This should solve the strange error.
-
 ## Run Parameters
 
 1. kScreenDim - Display window dimension (the bigger this value is the more computations and hence possible to see some delay)
@@ -65,19 +59,30 @@ When this happens, remove the `-std=c++17` flag from **CMakeLists.txt** file and
 - [x] The README indicates which project is chosen
 - [x] The README includes information about each rubric point addressed
 - [x] The submission must compile and run
+  * ![](./serial.png)
 - [x] The project demonstrates an understanding of C++ functions and control structures
+  * Functions, structures, classes are extensively used to organize and group data and actions
 - [x] The project accepts user input and processes the input
+  * @L5:main.cpp command line arguments are optionally used to alter the application execution parameters
 - [x] The project uses Object Oriented Programming techniques
+  * Renderer and Display classes are defined to group the data and the methods that act on them. In addition a renderer object is passed as a parameter to the "Run" function of a display object
 - [x] Classes use appropriate access specifiers for class members
+  * In header files display.h and renderer.h
 - [x] Class constructors utilize member initialization lists
+  * @L6:renderer.cpp and @L42:display.h
 - [x] Classes encapsulate behavior
-- [x] Overloaded functions allow the same function to operate on different parameters
+  * In header files display.h and renderer.h non-interface functions are made private
 - [x] Templates generalize functions in the project
+  * @L11 and @L22 of display.h
 - [x] The project makes use of references in function declarations
+  * In function protytpes to be seen in files display.h and renderer.h
 - [x] The project uses destructors appropriately
-- [x] The project uses scope / Resource Acquisition Is Initialization (RAII) where appropriate
+  * `Renderer::~Renderer() {
+  SDL_DestroyWindow(sdl_window);
+  SDL_Quit();
+}` @L35:renderer.cpp
 - [x] The project uses shared pointer for a vector of tuples holding the color of each pixel
-
+  * `std::shared_ptr<std::vector<std::tuple<int, int, int>>> colors;` @L62:display.h
 ## Credits
 
 Some of the core computing functions are adopted from this article https://solarianprogrammer.com/2013/02/28/mandelbrot-set-cpp-11/
