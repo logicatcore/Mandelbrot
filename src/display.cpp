@@ -106,7 +106,7 @@ void Display::Run(Renderer &renderer){
 
 void Display::Mandelbrot(int xMin, int yMin, int xMax, int yMax,
 												int sub_domain_width, int sub_domain_height, int cores, 
-												std::vector<std::tuple<int, int, int>> &clrs, int domain_no) 
+												std::shared_ptr<std::vector<std::tuple<int, int, int>>> clrs, int domain_no) 
 {
 	// Loop over each pixel from our image and check if the point associated with this pixel escapes to infinity
 	int offset = std::round(domain_no / 2) * (2 * sub_domain_height) * sub_domain_width;
@@ -146,7 +146,7 @@ std::complex<double> Display::scale(std::complex<double> c, int &scr_x_max, int 
 }
 
 // Check if a point is in the set or escapes to infinity, return the number if iterations
-void Display::map_color(std::complex<double> c, int &&idx, std::vector<std::tuple<int, int, int>> &clr) 
+void Display::map_color(std::complex<double> c, int &&idx, std::shared_ptr<std::vector<std::tuple<int, int, int>>> &clr) 
 {
 	std::complex<double> z(0);
 	int iter = 0;
@@ -158,7 +158,7 @@ void Display::map_color(std::complex<double> c, int &&idx, std::vector<std::tupl
 	set_color(iter, idx, clr);
 }
 
-void Display::set_color(int iter, int idx, std::vector<std::tuple<int, int, int>> &clr) {
+void Display::set_color(int iter, int idx, std::shared_ptr<std::vector<std::tuple<int, int, int>>> &clr) {
 	// map n on the 0..1 interval
 	double t = (double)iter/(double)MAX_ITERS;
 
@@ -167,7 +167,7 @@ void Display::set_color(int iter, int idx, std::vector<std::tuple<int, int, int>
 	int g = (int)(15*(1-t)*(1-t)*t*t*255);
 	int b =  (int)(8.5*(1-t)*(1-t)*(1-t)*t*255);
 	
-	std::get<0>(clr[idx]) = r;
-	std::get<1>(clr[idx]) = g;
-	std::get<2>(clr[idx]) = b;
+	std::get<0>((*clr)[idx]) = r;
+	std::get<1>((*clr)[idx]) = g;
+	std::get<2>((*clr)[idx]) = b;
 }

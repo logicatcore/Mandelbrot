@@ -6,6 +6,7 @@
 #include <vector>
 #include <complex>
 #include <tuple>
+#include <memory>
 
 // window details in pixel units
 template <typename T>
@@ -50,22 +51,22 @@ class Display {
       scr.y_min = 0; 
       scr.y_max = screen_dim; 
 
-      colors = std::vector<std::tuple<int, int, int>>(screen_dim * screen_dim);
+      colors = std::make_shared<std::vector<std::tuple<int, int, int>>>(screen_dim * screen_dim);
     };
   void Run(Renderer &renderer);
   void Mandelbrot(int xMin, int yMin, int xMax, int yMax, 
                   int sub_domain_width, int sub_domain_height, int cores, 
-                  std::vector<std::tuple<int, int, int>> &clrs, int domain_no) ;
+                  std::shared_ptr<std::vector<std::tuple<int, int, int>>> clrs, int domain_no) ;
 
   std::complex<double> fullDomainScale(std::complex<double> c);
   std::complex<double> scale(std::complex<double> c, int &scr_x_max, int &scr_y_max, int n_cores);
-  void map_color(std::complex<double> c, int &&idx, std::vector<std::tuple<int, int, int>> &clr);
-  void set_color(int iter, int idx, std::vector<std::tuple<int, int, int>> &clr);
+  void map_color(std::complex<double> c, int &&idx, std::shared_ptr<std::vector<std::tuple<int, int, int>>> &clr);
+  void set_color(int iter, int idx, std::shared_ptr<std::vector<std::tuple<int, int, int>>> &clr);
  
  private:
   Scr<int> scr;
   Fract<double> fract;
-  std::vector<std::tuple<int, int, int>> colors;
+  std::shared_ptr<std::vector<std::tuple<int, int, int>>> colors;
   const int MAX_ITERS; 
 };
 

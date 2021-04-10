@@ -4,13 +4,14 @@
 #include <tuple>
 #include <vector>
 #include "SDL.h"
+#include <memory>
 
 class Renderer {
  public:
   Renderer(const std::size_t screen_dim);
   ~Renderer();
 
-  void Render(std::vector<std::tuple<int, int, int>> &clrs);
+  void Render(std::shared_ptr<std::vector<std::tuple<int, int, int>>> clrs);
 
  private:
   SDL_Window *sdl_window;
