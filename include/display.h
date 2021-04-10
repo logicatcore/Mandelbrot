@@ -31,13 +31,15 @@ struct Fract{
 
 class Display {
  public:
-  Display(const std::size_t screen_dim,
-          const double x_low,
-          const double x_high,
-          const double y_low,
-          const double y_high,
-          const std::size_t max_iters)
-    : MAX_ITERS(max_iters) {
+  Display(std::size_t screen_dim = 600,
+          std::size_t order = 2,
+          double x_low = -2.2,
+          double x_high = 1.2,
+          double y_low = -1.7,
+          double y_high = 1.7,
+          std::size_t max_iters = 100)
+    : MAX_ITERS(max_iters),
+      SET_ORDER(order) {
       fract.x_min = x_low;
       fract.x_max = x_high;
       fract.y_min = y_low;
@@ -60,7 +62,7 @@ class Display {
   Scr<int> scr;
   Fract<double> fract;
   std::vector<std::tuple<int, int, int>> colors;
-  const int MAX_ITERS; 
+  const int MAX_ITERS, SET_ORDER; 
   void Update();
 };
 

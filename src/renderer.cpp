@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 
-Renderer::Renderer(const std::size_t screen_dim)
+Renderer::Renderer(const std::size_t screen_dim = 600)
     : screen_dim(screen_dim),
       wx_max(screen_dim),
       wy_max(screen_dim) {

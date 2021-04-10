@@ -1,4 +1,5 @@
 #include "../include/display.h"
+#include <cmath>
 
 void Display::Run(Renderer &renderer){
 	std::complex<double> tmp1, tmp2;
@@ -88,7 +89,7 @@ void Display::map_color(std::complex<double> c)
 	int iter = 0;
 
 	while (abs(z) < 2.0 && iter < MAX_ITERS) {
-		z = z * z  + c;
+		z = std::pow(z, SET_ORDER) + c;
 		iter++;
 	}
 	set_color(iter);
