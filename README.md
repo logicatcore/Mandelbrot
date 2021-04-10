@@ -6,8 +6,8 @@ This Capstone Project is meant to show the students(here mine) ability to integr
 The Mandelbrot set is the set of complex numbers c for which the function `f(z) = z^2 + c` does not **diverge** when iterated from `z = 0`, i.e., for which the sequence `f(0)`, `f(f(0))`, etc., remains bounded in absolute value.
 
 This application enables investigating the Mandelbrot set flexibily and is capable of scaling to high precision investigation when proportional comutation power is availablle. This Repo consists of two versions of the same application-
-1. The first version maps each pixel to a point on the complex plane sequentially i.e. serial program execution
-2. The second version first divides the entire window into sub windows based on the supported hardware concurrenct and then maps each pixel in each sub window to the complex plane parallely to increase the speed. The increase in speed due to parallel execution is clearly evident during usage. 
+1. The first version maps each pixel to a point on the complex plane sequentially i.e. serial program execution. On branch **serial_computation**.
+2. The second version first divides the entire window into sub windows based on the supported hardware concurrenct and then maps each pixel in each sub window to the complex plane parallely to increase the speed. The increase in speed due to parallel execution is clearly evident during usage. On branch **parallel_computation**.
 
 ## Dependencies for Running Locally
 * cmake >= 3.7
@@ -70,3 +70,7 @@ When this happens, remove the `-std=c++17` flag from **CMakeLists.txt** file and
 - [x] The project uses scope / Resource Acquisition Is Initialization (RAII) where appropriate
 - [x] The project uses shared pointer for a vector of tuples holding the color of each pixel
 - [x] The project uses multiple threading to speed up the computations
+
+## Credits
+
+Some of the core computing functions are adopted from this article https://solarianprogrammer.com/2013/02/28/mandelbrot-set-cpp-11/
