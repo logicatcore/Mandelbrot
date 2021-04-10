@@ -12,6 +12,7 @@ This application enables investigating the Mandelbrot set flexibily and is capab
 ## Application preview
 
 ![](./main.png)
+![](./animatedGIF.gif)
 
 ## Dependencies for Running Locally
 * cmake >= 3.7
