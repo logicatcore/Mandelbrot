@@ -37,7 +37,7 @@ Renderer::~Renderer() {
   SDL_Quit();
 }
 
-void Renderer::Render(std::vector<std::tuple<int, int, int>> &clrs) {
+void Renderer::Render(std::shared_ptr<std::vector<std::tuple<int, int, int>>> clrs) {
   // Clear screen
   SDL_SetRenderDrawColor(sdl_renderer, 0x1E, 0x1E, 0x1E, 0xFF);
   SDL_RenderClear(sdl_renderer);
@@ -45,10 +45,9 @@ void Renderer::Render(std::vector<std::tuple<int, int, int>> &clrs) {
   int k = 0;
   for(int i = wy_min; i < wy_max; ++i) {
 		for(int j = wx_min; j < wx_max; ++j) {
-      SDL_SetRenderDrawColor(sdl_renderer, std::get<0>(clrs[k]), std::get<1>(clrs[k]), std::get<2>(clrs[k]), 255);
+      SDL_SetRenderDrawColor(sdl_renderer, std::get<0>((*clrs)[k]), std::get<1>((*clrs)[k]), std::get<2>((*clrs)[k]), 255);
       SDL_RenderDrawPoint(sdl_renderer, j, i);
-
-      k += 1;
+      k++;
     }
   }
   

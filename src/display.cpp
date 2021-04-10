@@ -14,6 +14,7 @@ void Display::Run(Renderer &renderer){
 	SDL_Point start, end;
 	bool event = false;
 	bool quit = false;
+
   while (!quit){
 		// loop exit
 		SDL_PollEvent(&e);
@@ -47,9 +48,6 @@ void Display::Run(Renderer &renderer){
 			fract.x_max = tmp2.real();
 			fract.y_max = tmp2.imag();
 			
-
-
-			colors.clear();
 			Mandelbrot(renderer);
 			renderer.Render(colors);
 
@@ -60,16 +58,14 @@ void Display::Run(Renderer &renderer){
 
 void Display::Mandelbrot(Renderer &renderer) 
 {
-	calculate_number_iterations();
-}
-
 // Loop over each pixel from our image and check if the point associated with this pixel escapes to infinity
-void Display::calculate_number_iterations() {
+	int pixel = 0;
 	for(int i = scr.y_min; i < scr.y_max; ++i) {
 		for(int j = scr.x_min; j < scr.x_max; ++j) {
 			std::complex<double> c((double)j, (double)i);
 			c = scale(c);
-			map_color(c);
+			map_color(c, pixel);
+			pixel++;
 		}
 	}
 }
@@ -83,7 +79,7 @@ std::complex<double> Display::scale(std::complex<double> c) {
 
 
 // Check if a point is in the set or escapes to infinity, return the number if iterations
-void Display::map_color(std::complex<double> c) 
+void Display::map_color(std::complex<double> c, int &idx) 
 {
 	std::complex<double> z(0);
 	int iter = 0;
@@ -92,10 +88,10 @@ void Display::map_color(std::complex<double> c)
 		z = std::pow(z, SET_ORDER) + c;
 		iter++;
 	}
-	set_color(iter);
+	set_color(iter, idx);
 }
 
-void Display::set_color(int iter) {
+void Display::set_color(int iter, int &idx) {
 	// map n on the 0..1 interval
 	double t = (double)iter/(double)MAX_ITERS;
 
@@ -103,5 +99,8 @@ void Display::set_color(int iter) {
 	int r = (int)(9*(1-t)*t*t*t*255);
 	int g = (int)(15*(1-t)*(1-t)*t*t*255);
 	int b =  (int)(8.5*(1-t)*(1-t)*(1-t)*t*255);
-	colors.emplace_back(std::tuple(r, g, b));
+
+	std::get<0>((*colors)[idx]) = r;
+	std::get<1>((*colors)[idx]) = g;
+	std::get<2>((*colors)[idx]) = b;
 }

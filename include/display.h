@@ -6,6 +6,7 @@
 #include <vector>
 #include <complex>
 #include <tuple>
+#include <memory>
 
 template <typename T>
 struct Scr{
@@ -48,7 +49,9 @@ class Display {
       scr.x_min = 0;
       scr.x_max = screen_dim; 
       scr.y_min = 0; 
-      scr.y_max = screen_dim; 
+      scr.y_max = screen_dim;
+
+      colors = std::make_shared<std::vector<std::tuple<int, int, int>>>(screen_dim * screen_dim);
     };
   void Run(Renderer &renderer);
 
@@ -56,14 +59,14 @@ class Display {
  private:
   Scr<int> scr;
   Fract<double> fract;
-  std::vector<std::tuple<int, int, int>> colors;
+  std::shared_ptr<std::vector<std::tuple<int, int, int>>> colors;
   const int MAX_ITERS, SET_ORDER; 
 
   void Mandelbrot(Renderer &renderer);
   void calculate_number_iterations();
   std::complex<double> scale(std::complex<double> c);
-  void map_color(std::complex<double> c);
-  void set_color(int iter);
+  void map_color(std::complex<double> c, int &idx);
+  void set_color(int iter, int &idx);
 };
 
 #endif
