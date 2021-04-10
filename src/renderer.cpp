@@ -2,12 +2,10 @@
 #include <iostream>
 #include <string>
 
-Renderer::Renderer(const std::size_t screen_width,
-                   const std::size_t screen_height)
-    : screen_width(screen_width),
-      screen_height(screen_height),
-      wx_max(screen_width),
-      wy_max(screen_height) {
+Renderer::Renderer(const std::size_t screen_dim)
+    : screen_dim(screen_dim),
+      wx_max(screen_dim),
+      wy_max(screen_dim) {
   // Initialize SDL
   if (SDL_Init(SDL_INIT_VIDEO) < 0) {
     std::cerr << "SDL could not initialize.\n";
@@ -16,8 +14,8 @@ Renderer::Renderer(const std::size_t screen_width,
 
   // Create Window
   sdl_window = SDL_CreateWindow("Snake Game", SDL_WINDOWPOS_CENTERED,
-                                SDL_WINDOWPOS_CENTERED, screen_width,
-                                screen_height, SDL_WINDOW_SHOWN);
+                                SDL_WINDOWPOS_CENTERED, screen_dim,
+                                screen_dim, SDL_WINDOW_SHOWN);
 
   if (nullptr == sdl_window) {
     std::cerr << "Window could not be created.\n";

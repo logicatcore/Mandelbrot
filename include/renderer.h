@@ -7,8 +7,7 @@
 
 class Renderer {
  public:
-  Renderer(const std::size_t screen_width, 
-          const std::size_t screen_height);
+  Renderer(const std::size_t screen_dim);
   ~Renderer();
 
   void Render(std::vector<std::tuple<int, int, int>> &clrs);
@@ -18,8 +17,7 @@ class Renderer {
   SDL_Renderer *sdl_renderer;
 
   const std::size_t wx_min{0}, wx_max, wy_min{0}, wy_max; 
-  const std::size_t screen_width;
-  const std::size_t screen_height;
+  const std::size_t screen_dim;
 };
 
 #endif

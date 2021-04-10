@@ -31,8 +31,7 @@ struct Fract{
 
 class Display {
  public:
-  Display(const std::size_t screen_width,
-          const std::size_t screen_height,
+  Display(const std::size_t screen_dim,
           const double x_low,
           const double x_high,
           const double y_low,
@@ -45,9 +44,9 @@ class Display {
       fract.y_max = y_high;
       
       scr.x_min = 0;
-      scr.x_max = screen_width; 
+      scr.x_max = screen_dim; 
       scr.y_min = 0; 
-      scr.y_max = screen_height; 
+      scr.y_max = screen_dim; 
     };
   void Run(Renderer &renderer);
   void Mandelbrot(Renderer &renderer);

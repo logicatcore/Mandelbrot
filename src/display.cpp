@@ -1,10 +1,12 @@
 #include "../include/display.h"
 
 void Display::Run(Renderer &renderer){
-	std::complex<double> tmp;
+	std::complex<double> tmp1, tmp2;
   Mandelbrot(renderer);
 	renderer.Render(colors);
-
+	int width;
+	int height;
+	// disable capturing mouse events outside the window
 	SDL_CaptureMouse(SDL_FALSE);
 
 	SDL_Event e;
@@ -12,11 +14,13 @@ void Display::Run(Renderer &renderer){
 	bool event = false;
 	bool quit = false;
   while (!quit){
+		// loop exit
 		SDL_PollEvent(&e);
 		if (e.type == SDL_QUIT) {
       quit = true;
 			continue;
     }
+		// zoom functionality
 		SDL_PumpEvents();
 		if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT)) {
 			if (!event){
@@ -24,20 +28,25 @@ void Display::Run(Renderer &renderer){
 				event = true;
 			}
 			else{
-				SDL_GetMouseState(&end.x, &end.y);
+				SDL_GetMouseState(&end.x, &end.y); // keep overwriting till the end of the event
 			}
 		}
+		// after a zoom event
 		if (event & (!(SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT)))) {
-			tmp = scale(std::complex<double>(start.x, start.y));
-			fract.x_min = tmp.real();
-			fract.y_min = tmp.imag();
-
-			int width = end.x - start.x;
-			int height = end.y - start.y;
+			tmp1 = scale(std::complex<double>(start.x, start.y));
 			
-			tmp = scale(std::complex<double>(start.x + std::max(width, height), start.y + std::max(width, height)));
-			fract.x_max = tmp.real();
-			fract.y_max = tmp.imag();
+			height = end.y - start.y;
+			width = end.x - start.x;
+
+			tmp2 = scale(std::complex<double>(start.x + std::max(width, height), start.y + std::max(width, height)));
+			
+			fract.x_min = tmp1.real();
+			fract.y_min = tmp1.imag();
+
+			fract.x_max = tmp2.real();
+			fract.y_max = tmp2.imag();
+			
+
 
 			colors.clear();
 			Mandelbrot(renderer);
