@@ -58,20 +58,22 @@ class Display {
       colors = std::make_shared<std::vector<std::tuple<size_t, size_t, size_t>>>(screen_dim * screen_dim);
     };
   void Run(Renderer &renderer);
+
+ private:
+  Scr<size_t> scr;
+  Fract<double> fract;
+  std::shared_ptr<std::vector<std::tuple<size_t, size_t, size_t>>> colors;
+  const size_t MAX_ITERS, SET_ORDER; 
+
   void Mandelbrot(size_t xMin, size_t yMin, size_t xMax, size_t yMax, 
-                  size_t sub_domain_width, size_t sub_domain_height, size_t cores, 
-                  std::shared_ptr<std::vector<std::tuple<size_t, size_t, size_t>>> clrs, size_t domain_no) ;
+                size_t sub_domain_width, size_t sub_domain_height, size_t cores, 
+                std::shared_ptr<std::vector<std::tuple<size_t, size_t, size_t>>> clrs, size_t domain_no) ;
 
   std::complex<double> Scale(std::complex<double> c);
   std::complex<double> scale(std::complex<double> c, size_t &scr_x_max, size_t &scr_y_max, size_t n_cores);
   void map_color(std::complex<double> c, size_t &&idx, std::shared_ptr<std::vector<std::tuple<size_t, size_t, size_t>>> &clr);
   void set_color(size_t iter, size_t idx, std::shared_ptr<std::vector<std::tuple<size_t, size_t, size_t>>> &clr);
  
- private:
-  Scr<size_t> scr;
-  Fract<double> fract;
-  std::shared_ptr<std::vector<std::tuple<size_t, size_t, size_t>>> colors;
-  const size_t MAX_ITERS, SET_ORDER; 
 };
 
 #endif
