@@ -8,7 +8,7 @@
 
 class Renderer {
  public:
-  Renderer(const std::size_t screen_dim);
+  Renderer(const std::size_t screen_dim = 600);
   ~Renderer();
 
   void Render(std::shared_ptr<std::vector<std::tuple<int, int, int>>> clrs);
