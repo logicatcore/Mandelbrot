@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 
-Renderer::Renderer(const std::size_t screen_dim = 600)
+Renderer::Renderer(std::size_t screen_dim)
     : screen_dim(screen_dim){
   // Initialize SDL
   if (SDL_Init(SDL_INIT_VIDEO) < 0) {
