@@ -45,6 +45,18 @@ This application enables investigating the Mandelbrot set flexibily and is capab
 3. The drawn rectangle is turned into a square internally to maintain aspect ratio
 4. Depending on the window size initially set and the max iterations set, the window will be updated in less than a second or in a couple of seconds to show the slected complex plane region of the Mandelbrot set
 
+## Command line usage to generate nth order Mandelbrot set
+```shell
+# z = z^(n) + c
+# ./Application window_size maximum_iterations order_of_mandelbrot_set
+$> ./Mandelbrot 600 600 6
+```
+You would be interested to know that the number of lobes in the Mandelbrot set are always 1 less than the order of the set.
+
+Here is the output that can be seen in the window for a 6th order Mandelbrot set
+![](./6th_order.png)
+
+
 ## Debugging
 
 It is possible that you might run into this error 
