@@ -1,3 +1,6 @@
+# Updates
+
+The previous application built using the SDL library has been ported to OpenCV which provides a much more informative feedback. Particularly speaking, earlier the zooming action was accomplised by tracking the mouse movements through a callback to form an imaginary zooming region. But now using the OpenCV library the zooming action has been made more intutive and easy to use.
 # Udacity CPP Nanodegree: Capstone Mandelbrot Project
 
 This Capstone Project is meant to show the students(here mine) ability to integrate what has been learned throughout C++ Nanodegree program. This project demonstrates that I can independently create applications using a wide range of C++ features.
@@ -28,8 +31,7 @@ This application enables investigating the Mandelbrot set flexibily and is capab
   * Linux: gcc / g++ is installed by default on most Linux distros
   * Mac: same deal as make - [install Xcode command line tools](https://developer.apple.com/xcode/features/)
   * Windows: recommend using [MinGW](http://www.mingw.org/)
-* SDL library
-  * Installation on linux machines `sudo apt-get install libsdl2-dev`
+* OpenCV 4.1
 
 ## Basic Build Instructions
 
@@ -71,42 +73,6 @@ When this happens, remove the `-std=c++17` flag from **CMakeLists.txt** file and
 1. kScreenDim - Display window dimension (the bigger this value is the more computations and hence possible to see some delay)
 2. maxIter - Maximum number of iterations to check if the points on complex plane cross the 2.0 threshold
 3. MandelbrotSetOrder - Determines the Mandelbrot set order to compute ` z = std::pow(z, SET_ORDER) + c`
-
-## Rubric Points satisfied
-
-- [x] A README with instructions is included with the project
-- [x] The README indicates which project is chosen
-- [x] The README includes information about each rubric point addressed
-- [x] The submission must compile and run
-  * ![](./parallel.png)
-- [x] The project demonstrates an understanding of C++ functions and control structures
-  * Functions, structures, classes are extensively used to organize and group data and actions
-- [x] The project accepts user input and processes the input
-  * @L5:main.cpp command line arguments are optionally used to alter the application execution parameters
-- [x] The project uses Object Oriented Programming techniques
-  * Renderer and Display classes are defined to group the data and the methods that act on them. In addition a renderer object is passed as a parameter to the "Run" function of a display object
-- [x] Classes use appropriate access specifiers for class members
-  * In header files display.h and renderer.h
-- [x] Class constructors utilize member initialization lists
-  * @L6:renderer.cpp and @L46:display.h
-- [x] Classes encapsulate behavior
-  * In header files display.h and renderer.h non-interface functions are made private
-- [x] Overloaded functions allow the same function to operate on different parameters
-  *   `std::complex<double> Scale(std::complex<double> c);` and `std::complex<double> scale(std::complex<double> c, size_t &scr_x_max, size_t &scr_y_max, size_t n_cores);` @L72 and @L73 display.h
-- [x] Templates generalize functions in the project
-  * @L12 and @L24 of display.h
-- [x] The project makes use of references in function declarations
-  * In function protytpes to be seen in files display.h and renderer.h
-- [x] The project uses destructors appropriately
-  * `Renderer::~Renderer() {
-       SDL_DestroyWindow(sdl_window);
-       SDL_Quit();
-    }` @L33:renderer.cpp
-- [x] The project uses shared pointer for a vector of tuples holding the color of each pixel
-  * `std::shared_ptr<std::vector<std::tuple<int, int, int>>> colors;` @L62:display.h
-- [x] The project uses multiple threading to speed up the computations
-  * `threads.emplace_back(std::thread(&Display::Mandelbrot, this,...` @L89:display.cpp
-
 ## Credits
 
 Some of the core computing functions are adopted from this article https://solarianprogrammer.com/2013/02/28/mandelbrot-set-cpp-11/
