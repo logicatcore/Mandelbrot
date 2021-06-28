@@ -9,12 +9,14 @@
 class Renderer {
  public:
   Renderer(unsigned int screen_dim = 600);
-  ~Renderer(){};
+  ~Renderer(){
+    delete img;
+  };
 
   void Render(std::shared_ptr<std::vector<std::tuple<int, int, int>>> clrs, cv::Rect &crop, int &key);
 
  private:
-  cv::Mat img;
+  cv::Mat *img;
   std::string windowName{"Mandelbrot"}; 
   const std::size_t screen_dim;
 };
