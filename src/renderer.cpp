@@ -1,55 +1,57 @@
 #include "../include/renderer.h"
 #include <iostream>
 #include <string>
+#include <algorithm>
 
-Renderer::Renderer(std::size_t screen_dim)
-    : screen_dim(screen_dim){
-  // Initialize SDL
-  if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-    std::cerr << "SDL could not initialize.\n";
-    std::cerr << "SDL_Error: " << SDL_GetError() << "\n";
+typedef cv::Point3_<uint8_t> Pixel;
+
+Renderer::Renderer(unsigned int screen_dim)
+    : screen_dim(screen_dim)
+  {
+    img.create(cv::Size(screen_dim, screen_dim), CV_8UC3);
+    cv::namedWindow(windowName, cv::WINDOW_KEEPRATIO);
+    cv::resizeWindow(windowName, screen_dim, screen_dim);
   }
 
-  // Create Window
-  sdl_window = SDL_CreateWindow("Snake Game", SDL_WINDOWPOS_CENTERED,
-                                SDL_WINDOWPOS_CENTERED, screen_dim,
-                                screen_dim, SDL_WINDOW_SHOWN);
+void Renderer::Render(std::shared_ptr<std::vector<std::tuple<int, int, int>>> clrs, cv::Rect &crop, int &key) {
 
-  if (nullptr == sdl_window) {
-    std::cerr << "Window could not be created.\n";
-    std::cerr << " SDL_Error: " << SDL_GetError() << "\n";
-  }
+  std::for_each((*clrs).begin(), (*clrs).end(), [this](std::tuple<int, int, int> &clr){
+    static int r = 0, c = 0;
+    if (c == this->screen_dim){
+      c = 0;
+    }
+    this->img.at<cv::Vec3b>(r, c)[2] = std::get<0>(clr);
+    this->img.at<cv::Vec3b>(r, c)[1] = std::get<1>(clr); 
+    this->img.at<cv::Vec3b>(r, c)[0] = std::get<2>(clr);
+    r++;
+    if (r == this->screen_dim){
+      r = 0;
+      c++;
+    }
+  });
 
-  // Create renderer
-  sdl_renderer = SDL_CreateRenderer(sdl_window, -1, SDL_RENDERER_ACCELERATED);
-  if (nullptr == sdl_renderer) {
-    std::cerr << "Renderer could not be created.\n";
-    std::cerr << "SDL_Error: " << SDL_GetError() << "\n";
-  }
-  // window title
-  SDL_SetWindowTitle(sdl_window, "Mandelbrot Set");
-}
+  // Update Screen
+  cv::imshow(windowName, img);
+  // allow time to update screen
+  cv::waitKey(100);
 
-Renderer::~Renderer() {
-  SDL_DestroyWindow(sdl_window);
-  SDL_Quit();
-}
+  // handle proper exit sequence
+  std::cout << "Press 'q' to quit or 'z' to continue and zoom in the set: ";
+  char keyStroke;
+  std::cin >> keyStroke;
 
-void Renderer::Render(std::shared_ptr<std::vector<std::tuple<std::size_t, std::size_t, std::size_t>>> clrs) {
-  // Clear screen
-  SDL_SetRenderDrawColor(sdl_renderer, 0x1E, 0x1E, 0x1E, 0xFF);
-  SDL_RenderClear(sdl_renderer);
-
-  int k = 0;
-  for(int i = 0; i < screen_dim; ++i) {
-		for(int j = 0; j < screen_dim; ++j) {
-      SDL_SetRenderDrawColor(sdl_renderer, std::get<0>((*clrs)[k]), std::get<1>((*clrs)[k]), std::get<2>((*clrs)[k]), 255);
-      SDL_RenderDrawPoint(sdl_renderer, i, j);
-      k++;
+  if (keyStroke == 'z'){
+    crop = cv::selectROI(windowName, img);
+    // if changed the mind about zooming
+    if (crop.width == 0 && crop.height == 0){
+      key = 'q';
+      cv::destroyWindow(windowName);
     }
   }
-  // Update Screen
-  SDL_RenderPresent(sdl_renderer);
+  else if(keyStroke == 'q') {
+    key = 'q';
+    cv::destroyWindow(windowName);
+  }
 }
 
 

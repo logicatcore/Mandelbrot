@@ -3,20 +3,19 @@
 
 #include <tuple>
 #include <vector>
-#include "SDL.h"
 #include <memory>
+#include <opencv2/highgui/highgui.hpp>
 
 class Renderer {
  public:
-  Renderer(std::size_t screen_dim = 600);
-  ~Renderer();
+  Renderer(unsigned int screen_dim = 600);
+  ~Renderer(){};
 
-  void Render(std::shared_ptr<std::vector<std::tuple<std::size_t, std::size_t, std::size_t>>> clrs);
+  void Render(std::shared_ptr<std::vector<std::tuple<int, int, int>>> clrs, cv::Rect &crop, int &key);
 
  private:
-  SDL_Window *sdl_window;
-  SDL_Renderer *sdl_renderer;
-
+  cv::Mat img;
+  std::string windowName{"Mandelbrot"}; 
   const std::size_t screen_dim;
 };
 
