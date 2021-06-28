@@ -40,10 +40,11 @@ This application enables investigating the Mandelbrot set flexibily and is capab
 
 ## Usage instructions
 
-1. The application window is capable of handling zoom requests but without a visual feedback of a dynamic zooming rectangle
-2. To zoom, draw an imaginary rectangle by moving the left mouse key pressed from top left corner to bottom right corner
+1. The application window is capable of handling zoom requests with a visual feedback using OpenCV's selctROI feature
+2. To zoom, draw a rectangle by moving the left mouse key pressed from top left corner to bottom right corner. Press SPACE or ENTER when happy with the selection
 3. The drawn rectangle is turned into a square internally to maintain aspect ratio
 4. Depending on the window size initially set and the max iterations set, the window will be updated in less than a second or in a couple of seconds to show the slected complex plane region of the Mandelbrot set
+5. To quit press 'q' at the prompt when asked or when decided to proceed with zoom.
 
 ## Command line usage to generate nth order Mandelbrot set
 ```shell
